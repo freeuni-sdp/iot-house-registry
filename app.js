@@ -1,6 +1,7 @@
-var bodyParser = require('body-parser')
-var express = require('express');
-var app = express();
+var bodyParser = require('body-parser'),
+	express = require('express'),
+	router  = express.Router(),
+	app = express();
 
 app.use(bodyParser.json())
 
@@ -19,10 +20,13 @@ var House = require('./models/house');
 var house = new House(azure.createTableService(accountName, accountKey), tableName, partitionKey);
 var houseList = new HouseList(house);
 
-app.get('/', houseList.showHouses.bind(houseList));
-app.post('/', houseList.addHouse.bind(houseList));
-app.put('/:id', houseList.updateHouse.bind(houseList));
-app.delete('/:id', houseList.deleteHouse.bind(houseList));
+app.use('/houses', router);
+
+router.get('/', houseList.showHouses.bind(houseList));
+router.get('/:id', houseList.showHouses.bind(houseList));
+router.post('/', houseList.addHouse.bind(houseList));
+router.put('/:id', houseList.updateHouse.bind(houseList));
+router.delete('/:id', houseList.deleteHouse.bind(houseList));
 
 app.listen(3000, function () {
   console.log('App listening on port 3000!');

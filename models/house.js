@@ -14,7 +14,7 @@ function House(storageClient, tableName, partitionKey) {
     }
   });
 
-  this.insertOrUpdate = function (item, RowKey, callback) {
+  this.createItem = function (item, RowKey) {
     // use entityGenerator to set types
     // NOTE: RowKey must be a string type, even though
     // it contains a GUID in this example.
@@ -22,14 +22,13 @@ function House(storageClient, tableName, partitionKey) {
       PartitionKey: entityGen.String(partitionKey),
       RowKey: entityGen.String(RowKey),
       name: entityGen.String(item.name),
-      geoLocation: entityGen.String(item.geoLocation),
-      sprinklerIp: entityGen.String(item.sprinklerIp),
-      heatIp: entityGen.String(item.heatIp),
-      ventIp: entityGen.String(item.ventIp),
+      geo_location: entityGen.String(item.geo_location),
+      sprinkler_ip: entityGen.String(item.sprinkler_ip),
+      heat_ip: entityGen.String(item.heat_ip),
+      vent_ip: entityGen.String(item.vent_ip),
     };
-    storageClient.insertOrReplaceEntity(tableName, itemDescriptor, function (error, result, response) {
-      callback(error, RowKey);
-    });
+
+    return itemDescriptor;
   }
 };
 
@@ -47,11 +46,18 @@ House.prototype = {
   },
 
   addItem: function(item, callback) {
-    this.insertOrUpdate(item, uuid(), callback);
+    var RowKey = uuid();
+    var item = this.createItem(item, RowKey);
+    this.storageClient.insertEntity(this.tableName, item, function (error, result, response) {
+      callback(error, RowKey);
+    });
   },
 
   updateItem: function(item, id, callback) {
-    this.insertOrUpdate(item, id, callback);
+    var item = this.createItem(item, id);
+    this.storageClient.replaceEntity(this.tableName, item, function (error, result, response) {
+      callback(error);
+    });
   },
 
   deleteItem: function(id, callback) {
@@ -60,12 +66,8 @@ House.prototype = {
       PartitionKey: entityGen.String(this.partitionKey),
       RowKey: entityGen.String(id),
     };
-    self.storageClient.deleteEntity(this.tableName, itemDescriptor, function entitiesQueried(error, result) {
-      if(error) {
-        callback(error);
-      } else {
-        callback(null, result.entries);
-      }
+    self.storageClient.deleteEntity(this.tableName, itemDescriptor, function entitiesQueried(error, result, response) {
+      callback(error, result);
     });
   }
 
