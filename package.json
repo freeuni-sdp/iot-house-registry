@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/freeuni-sdp/iot-house-registry#readme",
   "dependencies": {
-    "async": "^2.0.0-rc.6",
     "azure-storage": "^1.0.1",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",

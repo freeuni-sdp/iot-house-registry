@@ -14,18 +14,16 @@ var partitionKey = nconf.get("PARTITION_KEY");
 var accountName = nconf.get("STORAGE_NAME");
 var accountKey = nconf.get("STORAGE_KEY");
 
-console.log(tableName+" "+partitionKey+" "+accountName+" "+accountKey);
+var HouseList = require('./routes/houselist');
+var House = require('./models/house');
+var house = new House(azure.createTableService(accountName, accountKey), tableName, partitionKey);
+var houseList = new HouseList(house);
 
-
-var TaskList = require('./routes/tasklist');
-var Task = require('./models/task');
-var task = new Task(azure.createTableService(accountName, accountKey), tableName, partitionKey);
-var taskList = new TaskList(task);
-
-app.get('/', taskList.showTasks.bind(taskList));
-app.post('/addtask', taskList.addTask.bind(taskList));
-app.post('/completetask', taskList.completeTask.bind(taskList));
+app.get('/', houseList.showHouses.bind(houseList));
+app.post('/', houseList.addHouse.bind(houseList));
+app.put('/:id', houseList.updateHouse.bind(houseList));
+app.delete('/:id', houseList.deleteHouse.bind(houseList));
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('App listening on port 3000!');
 });
