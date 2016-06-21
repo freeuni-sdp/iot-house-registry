@@ -45,6 +45,17 @@ House.prototype = {
     });
   },
 
+  retrieve: function(id, callback) {
+    self = this;
+    self.storageClient.retrieveEntity(self.tableName, self.partitionKey, id, function entitiesQueried(error, result) {
+      if(error) {
+        callback(error);
+      } else {
+        callback(null, result);
+      }
+    });
+  },
+
   addItem: function(item, callback) {
     var RowKey = uuid();
     var item = this.createItem(item, RowKey);

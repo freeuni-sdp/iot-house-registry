@@ -11,11 +11,19 @@ HouseList.prototype = {
     self = this;
     var query = new azure.TableQuery()
       .select();
-    if (req.params.id != null) {
-      query = query.where('RowKey eq ?', req.params.id);
-    }
 
     self.house.find(query, function itemsFound(error, items) {
+      if(error) {
+        res.status(500);
+        res.send(error);
+      }
+      res.send(JSON.stringify(items));
+    });
+  },
+
+  showHouse: function(req, res) {
+    self = this;
+    self.house.retrieve(req.params.id, function itemsFound(error, items) {
       if(error) {
         res.status(500);
         res.send(error);
@@ -33,7 +41,7 @@ HouseList.prototype = {
         res.send(error);
       }
       res.status(201);
-      res.location(RowKey);
+      res.location("houses/"+RowKey);
       res.send();
     });
   },

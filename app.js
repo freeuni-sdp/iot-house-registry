@@ -23,7 +23,7 @@ var houseList = new HouseList(house);
 app.use('/houses', router);
 
 router.get('/', houseList.showHouses.bind(houseList));
-router.get('/:id', houseList.showHouses.bind(houseList));
+router.get('/:id', houseList.showHouse.bind(houseList));
 router.post('/', houseList.addHouse.bind(houseList));
 router.put('/:id', houseList.updateHouse.bind(houseList));
 router.delete('/:id', houseList.deleteHouse.bind(houseList));
