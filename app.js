@@ -1,3 +1,4 @@
+require ('newrelic');
 var bodyParser = require('body-parser'),
 	express = require('express'),
 	router  = express.Router(),
