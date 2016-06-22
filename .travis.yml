@@ -1,0 +1,6 @@
+language: node_js
+
+deploy:
+   provider: heroku
+   api_key: $herokuToken
+   app: iot-house-registry
