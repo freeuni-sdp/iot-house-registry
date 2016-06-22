@@ -3,6 +3,7 @@ var bodyParser = require('body-parser'),
 	router  = express.Router(),
 	app = express();
 
+app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json())
 
 
@@ -28,6 +29,6 @@ router.post('/', houseList.addHouse.bind(houseList));
 router.put('/:id', houseList.updateHouse.bind(houseList));
 router.delete('/:id', houseList.deleteHouse.bind(houseList));
 
-app.listen(3000, function () {
-  console.log('App listening on port 3000!');
+app.listen(app.get('port'), function () {
+  console.log('Node app is running on port', app.get('port'));
 });
