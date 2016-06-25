@@ -17,7 +17,7 @@ HouseList.prototype = {
         res.status(500);
         res.send(error);
       }
-      res.send(JSON.stringify(items));
+      res.json(items);
     });
   },
 
@@ -28,7 +28,7 @@ HouseList.prototype = {
         res.status(500);
         res.send(error);
       }
-      res.send(JSON.stringify(items));
+      res.json(items);
     });
   },
 

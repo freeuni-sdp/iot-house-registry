@@ -26,11 +26,12 @@ function House(storageClient, tableName, partitionKey) {
       sprinkler_ip: entityGen.String(item.sprinkler_ip),
       heat_ip: entityGen.String(item.heat_ip),
       vent_ip: entityGen.String(item.vent_ip),
+      cam_ip: entityGen.String(item.cam_ip)
     };
 
     return itemDescriptor;
   }
-};
+}
 
 
 House.prototype = {
@@ -58,8 +59,8 @@ House.prototype = {
 
   addItem: function(item, callback) {
     var RowKey = uuid();
-    var item = this.createItem(item, RowKey);
-    this.storageClient.insertEntity(this.tableName, item, function (error, result, response) {
+    var newItem = this.createItem(item, RowKey);
+    this.storageClient.insertEntity(this.tableName, newItem, function (error, result, response) {
       callback(error, RowKey);
     });
   },
@@ -75,7 +76,7 @@ House.prototype = {
     self = this;
     var itemDescriptor = {
       PartitionKey: entityGen.String(this.partitionKey),
-      RowKey: entityGen.String(id),
+      RowKey: entityGen.String(id)
     };
     self.storageClient.deleteEntity(this.tableName, itemDescriptor, function entitiesQueried(error, result, response) {
       callback(error, result);
