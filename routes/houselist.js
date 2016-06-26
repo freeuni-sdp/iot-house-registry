@@ -34,7 +34,7 @@ HouseList.prototype = {
 
   addHouse: function(req,res) {
     var self = this;
-    var item = req.body.item;
+    var item = req.body;
     self.house.addItem(item, function (error, RowKey) {
       if(error) {
         res.status(500);
