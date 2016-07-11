@@ -14,7 +14,7 @@ HouseList.prototype = {
 
     self.house.find(query, function itemsFound(error, items) {
       if(error) {
-        res.status(500);
+        res.status(error.statusCode);
         res.send(error);
       }
       res.json(items);
@@ -25,7 +25,7 @@ HouseList.prototype = {
     self = this;
     self.house.retrieve(req.params.id, function itemsFound(error, items) {
       if(error) {
-        res.status(500);
+        res.status(error.statusCode);
         res.send(error);
       }
       res.json(items);
@@ -37,7 +37,7 @@ HouseList.prototype = {
     var item = req.body;
     self.house.addItem(item, function (error, RowKey) {
       if(error) {
-        res.status(500);
+        res.status(error.statusCode);
         res.send(error);
       }
       res.status(201);
