@@ -48,7 +48,7 @@ HouseList.prototype = {
 
   updateHouse: function(req,res) {
     var self = this;
-    var item = req.body.item;
+    var item = req.body;
     self.house.updateItem(item, req.params.id, function (error) {
       if(error) {
         res.status(error.statusCode);
